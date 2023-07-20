@@ -1,0 +1,23 @@
+.list-img-container {
+  list-style-type: none;
+  margin: 6px;
+  margin-left: 0px;
+}
+.each-img {
+  height: 100px;
+  width: 100px;
+}
+.img-btn {
+  background-color: transparent;
+  border: none;
+}
+@media (max-width: 576px) {
+  .list-img-container {
+    margin: 2px;
+  }
+
+  .each-img {
+    height: 65px;
+    width: 65px;
+  }
+}

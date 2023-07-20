@@ -1,0 +1,12 @@
+.list-container {
+  list-style-type: none;
+}
+.tab-style {
+  font-size: 24px;
+  font-weight: 500;
+  font-family: 'Roboto';
+  color: #ffffff;
+  margin-right: 20px;
+  border: none;
+  background-color: transparent;
+}
