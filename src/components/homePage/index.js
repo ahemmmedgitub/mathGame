@@ -5,12 +5,23 @@ import EachImage from '../imageList'
 import './index.css'
 
 class HomePageApp extends Component {
-  state = {
-    activeTabId: 'FRUIT',
-    index: 0,
-    count: 0,
-    time: 60,
-    winAndPlay: true,
+  constructor(props) {
+    super(props)
+    this.state = {
+      activeTabId: 'FRUIT',
+      index: 0,
+      count: 0,
+      time: 60,
+      winAndPlay: true,
+    }
+  }
+
+  componentDidMount() {
+    this.timerId = setInterval(this.thick, 1000)
+  }
+
+  thick = () => {
+    this.setState(prevState => ({time: prevState.time - 1}))
   }
 
   getTabId = tabId => {
@@ -29,7 +40,7 @@ class HomePageApp extends Component {
 
   onChangeImg = id => {
     const {imagesList} = this.props
-    const {index} = this.state
+    const {index, time} = this.state
     const randomNumber = Math.ceil(Math.random() * (imagesList.length - 1))
 
     this.setState({
@@ -39,17 +50,20 @@ class HomePageApp extends Component {
     if (imagesList[index].id === id) {
       this.setState(prevState => ({count: prevState.count + 1}))
     }
+
+    if (time === 0) {
+      this.setState({winAndPlay: false})
+    }
   }
 
-  getTimeDecrement = () => {
-    const {time} = this.state
-
-    let timer = time
-
-    setInterval(() => {
-      timer -= 1
-      return timer
-    }, 1000)
+  playAgain = () => {
+    this.setState({
+      winAndPlay: true,
+      count: 0,
+      activeTabId: 'FRUIT',
+      time: 60,
+    })
+    this.timerId = setInterval(this.thick, 1000)
   }
 
   render() {
@@ -57,7 +71,9 @@ class HomePageApp extends Component {
     const filteredList = this.getFilteredImgs()
     const {index, count, time, winAndPlay} = this.state
 
-    const displayTimeDecrement = this.getTimeDecrement()
+    if (time === 0) {
+      clearInterval(this.timerId)
+    }
 
     return (
       <div className="bg-container">
@@ -68,7 +84,7 @@ class HomePageApp extends Component {
             className="website-logo"
           />
           <div className="score-time-container">
-            <p className="score">Score {count}</p>
+            <p className="score">Score: {count}</p>
             <div className="time-timer-logo-container">
               <img
                 src="https://assets.ccbp.in/frontend/react-js/match-game-timer-img.png"
@@ -115,16 +131,21 @@ class HomePageApp extends Component {
               <img
                 src="https://assets.ccbp.in/frontend/react-js/match-game-trophy.png"
                 alt="trophy"
-                className="troply-img"
+                className="trophy-img"
               />
-              <p>Your Score {count}</p>
+              <p className="your-score">YOUR SCORE</p>
+              <p className="final-score">{count}</p>
               <div className="button-container">
                 <img
                   src="https://assets.ccbp.in/frontend/react-js/match-game-play-again-img.png"
                   alt="reset"
                   className="reset-logo"
                 />
-                <button type="button" className="play-button">
+                <button
+                  type="button"
+                  className="play-button"
+                  onClick={this.playAgain}
+                >
                   PLAY AGAIN
                 </button>
               </div>

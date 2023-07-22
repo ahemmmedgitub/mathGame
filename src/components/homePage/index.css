@@ -82,6 +82,7 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+  border: 2px solid red;
 }
 .result-main-container {
   display: flex;
@@ -89,11 +90,12 @@
   justify-content: center;
   align-items: center;
 }
-.troply-img {
+.trophy-img {
   height: 300px;
   width: 300px;
   align-self: center;
   margin-bottom: 0px;
+  margin-top: 200px;
 }
 .button-container {
   background-color: #cf60c8;
@@ -117,6 +119,22 @@
   color: #ffffff;
   background-color: transparent;
   border: none;
+}
+
+.your-score {
+  font-size: 30px;
+  font-weight: 500;
+  font-family: 'Roboto';
+  color: #ffffff;
+  margin-bottom: 0px;
+}
+.final-score {
+  font-size: 55px;
+  font-weight: 700;
+  font-family: 'Roboto';
+  color: #ffffff;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 @media (max-width: 576px) {
@@ -145,5 +163,12 @@
 
   .images-container {
     margin-right: 20px;
+  }
+  your-score {
+    font-size: 24px;
+  }
+
+  .final-score {
+    font-size: 40px;
   }
 }
