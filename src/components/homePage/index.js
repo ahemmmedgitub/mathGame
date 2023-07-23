@@ -12,7 +12,6 @@ class HomePageApp extends Component {
       index: 0,
       count: 0,
       time: 60,
-      winAndPlay: true,
     }
   }
 
@@ -28,6 +27,76 @@ class HomePageApp extends Component {
     this.setState({activeTabId: tabId})
   }
 
+  displayScore = () => {
+    const {count} = this.state
+
+    return (
+      <div className="result-main-container">
+        <div className="result-container">
+          <img
+            src="https://assets.ccbp.in/frontend/react-js/match-game-trophy.png"
+            alt="trophy"
+            className="trophy-img"
+          />
+          <p className="your-score">YOUR SCORE</p>
+          <p className="final-score">{count}</p>
+          <div className="button-container">
+            <img
+              src="https://assets.ccbp.in/frontend/react-js/match-game-play-again-img.png"
+              alt="reset"
+              className="reset-logo"
+            />
+            <button
+              type="button"
+              className="play-button"
+              onClick={this.playAgain}
+            >
+              PLAY AGAIN
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  getDisplayOfPlayGround = () => {
+    const {tabsList, imagesList} = this.props
+    const filteredList = this.getFilteredImgs()
+    const {index} = this.state
+
+    return (
+      <div>
+        <div className="main-img-container">
+          <MainImg
+            image={imagesList[index]}
+            key={imagesList[0].id}
+            getMainId={this.getMainId}
+          />
+        </div>
+        <ul className="tab-item-container">
+          {tabsList.map(eachTab => (
+            <TabItems
+              eachTab={eachTab}
+              key={eachTab.tabId}
+              clickOnTabItem={this.getTabId}
+            />
+          ))}
+        </ul>
+        <div className="images-container">
+          <ul className="each-img-container">
+            {filteredList.map(eachImgList => (
+              <EachImage
+                eachImgList={eachImgList}
+                key={eachImgList.id}
+                onChangeImg={this.onChangeImg}
+              />
+            ))}
+          </ul>
+        </div>
+      </div>
+    )
+  }
+
   getFilteredImgs = () => {
     const {imagesList} = this.props
     const {activeTabId} = this.state
@@ -40,25 +109,22 @@ class HomePageApp extends Component {
 
   onChangeImg = id => {
     const {imagesList} = this.props
-    const {index, time} = this.state
+    const {index} = this.state
     const randomNumber = Math.ceil(Math.random() * (imagesList.length - 1))
 
     this.setState({
       index: randomNumber,
     })
 
-    if (imagesList[index].id === id) {
-      this.setState(prevState => ({count: prevState.count + 1}))
+    if (imagesList[index].id !== id) {
+      this.displayScore()
+      clearInterval(this.timerId)
     }
-
-    if (time === 0) {
-      this.setState({winAndPlay: false})
-    }
+    this.setState(prevState => ({count: prevState.count + 1}))
   }
 
   playAgain = () => {
     this.setState({
-      winAndPlay: true,
       count: 0,
       activeTabId: 'FRUIT',
       time: 60,
@@ -66,10 +132,18 @@ class HomePageApp extends Component {
     this.timerId = setInterval(this.thick, 1000)
   }
 
+  gerResult = () => {
+    const {time} = this.state
+
+    if (time === 0) {
+      return this.displayScore()
+    }
+
+    return this.getDisplayOfPlayGround()
+  }
+
   render() {
-    const {tabsList, imagesList} = this.props
-    const filteredList = this.getFilteredImgs()
-    const {index, count, time, winAndPlay} = this.state
+    const {count, time} = this.state
 
     if (time === 0) {
       clearInterval(this.timerId)
@@ -83,77 +157,25 @@ class HomePageApp extends Component {
             alt="website logo"
             className="website-logo"
           />
-          <div className="score-time-container">
-            <p className="score">Score: {count}</p>
-            <div className="time-timer-logo-container">
-              <img
-                src="https://assets.ccbp.in/frontend/react-js/match-game-timer-img.png"
-                alt="timer"
-                className="timer-logo"
-              />
-              <p className="time">{time} sec</p>
-            </div>
-          </div>
-        </nav>
-        {winAndPlay ? (
-          <div>
-            <div className="main-img-container">
-              <MainImg
-                image={imagesList[index]}
-                key={imagesList[0].id}
-                getMainId={this.getMainId}
-              />
-            </div>
-            <ul className="tab-item-container">
-              {tabsList.map(eachTab => (
-                <TabItems
-                  eachTab={eachTab}
-                  key={eachTab.tabId}
-                  clickOnTabItem={this.getTabId}
-                />
-              ))}
-            </ul>
-            <div className="images-container">
-              <ul className="each-img-container">
-                {filteredList.map(eachImgList => (
-                  <EachImage
-                    eachImgList={eachImgList}
-                    key={eachImgList.id}
-                    onChangeImg={this.onChangeImg}
-                  />
-                ))}
-              </ul>
-            </div>
-          </div>
-        ) : (
-          <div className="result-main-container">
-            <div className="result-container">
-              <img
-                src="https://assets.ccbp.in/frontend/react-js/match-game-trophy.png"
-                alt="trophy"
-                className="trophy-img"
-              />
-              <p className="your-score">YOUR SCORE</p>
-              <p className="final-score">{count}</p>
-              <div className="button-container">
+          <ul className="score-time-container">
+            <p className="score">Score:</p>
+            <p className="score">{count}</p>
+            <li className="time-timer-logo-container">
+              <li>
                 <img
-                  src="https://assets.ccbp.in/frontend/react-js/match-game-play-again-img.png"
-                  alt="reset"
-                  className="reset-logo"
+                  src="https://assets.ccbp.in/frontend/react-js/match-game-timer-img.png"
+                  alt="timer"
+                  className="timer-logo"
                 />
-                <button
-                  type="button"
-                  className="play-button"
-                  onClick={this.playAgain}
-                >
-                  PLAY AGAIN
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+              </li>
+              <p className="time">{time} sec</p>
+            </li>
+          </ul>
+        </nav>
+        {this.gerResult()}
       </div>
     )
   }
 }
+
 export default HomePageApp

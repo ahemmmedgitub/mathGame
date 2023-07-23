@@ -2,7 +2,7 @@ import './index.css'
 
 const EachImage = props => {
   const {eachImgList, onChangeImg} = props
-  const {imageUrl, thumbnailUrl, id} = eachImgList
+  const {thumbnailUrl, id} = eachImgList
 
   const changeImage = () => {
     onChangeImg(id)

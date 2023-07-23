@@ -23,6 +23,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  list-style-type: none;
 }
 .time-timer-logo-container {
   display: flex;
@@ -36,13 +37,14 @@
   margin-right: 15px;
 }
 .score {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   font-family: 'Roboto';
   color: #ffffff;
+  padding-right: 10px;
 }
 .time {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   font-family: 'Roboto';
   color: #fec653;
@@ -82,7 +84,6 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  border: 2px solid red;
 }
 .result-main-container {
   display: flex;
